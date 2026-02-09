@@ -1,5 +1,5 @@
 // ===== CONFIG =====
-const API_URL = "PASTE_API_APPS_SCRIPT_KAMU";
+const API_URL = "https://script.google.com/macros/s/AKfycbypKCVNXkivwB7ownXSut3ohfgTpNcis93baJ1foHOaLoupmRFyxd-F-T0R8XRu41ONbQ/exec";
 
 // ===== HELPER =====
 function post(data) {
