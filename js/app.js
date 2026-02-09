@@ -5,8 +5,15 @@ const API_URL = "https://script.google.com/macros/s/AKfycbypKCVNXkivwB7ownXSut3o
 function post(data) {
   return fetch(API_URL, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
-  }).then(res => res.json());
+  })
+  .then(res => res.json())
+  .catch(err => {
+    alert("API ERROR: " + err);
+  });
 }
 
 // ===== AUTH =====
