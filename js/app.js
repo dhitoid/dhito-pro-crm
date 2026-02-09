@@ -1,5 +1,5 @@
 // ===== CONFIG =====
-const API_URL = "https://script.google.com/macros/s/AKfycby-aa2-HohONBOls-X0VIPlDm1Cb7_W2J_f9z88-7OH3Ytin_WpO48oSL4QajHWMgl3gQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxUiASo_EQFKNMQx_8uIAislpYS5QwfdidvHZ6PKq3iruEXgWpvkedw1TKO3HqvqLybsQ/exec";
 
 // ===== HELPER =====
 function post(data) {
