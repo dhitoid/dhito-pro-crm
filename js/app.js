@@ -20,11 +20,11 @@ function isLogin() {
 
 function logout() {
   localStorage.removeItem("dhito_login");
-  location.href = "login.html";
+  location.href = "index.html";
 }
 
 function protectPage() {
   if (!isLogin()) {
-    location.href = "login.html";
+    location.href = "index.html";
   }
 }
