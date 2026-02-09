@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Konsumen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+
+<div class="card" style="margin:20px">
+  <h2>Data Konsumen</h2>
+  <div id="list"></div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+protectPage();
+
+post({ action: "getLeads" }).then(res => {
+  if (res.status === "success") {
+    res.data.forEach(d => {
+      list.innerHTML += `
+        <div style="margin-bottom:12px;padding:12px;background:#1f2333;border-radius:12px">
+          <strong>${d[1]}</strong><br>
+          ${d[2]}<br>
+          <small>${d[4]} • ${d[5]}</small>
+        </div>
+      `;
+    });
+  }
+});
+</script>
+</body>
+</html>
