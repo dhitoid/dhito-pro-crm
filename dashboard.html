@@ -2,24 +2,28 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<title>Dashboard - Dhito Pro CRM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard – Dhito Pro CRM</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dark">
 
-<div class="card" style="margin:20px">
-  <h2>Dashboard</h2>
-  <p>Selamat datang di Dhito Pro CRM</p>
+<script src="js/auth.js"></script>
+<script>protect()</script>
 
-  <button onclick="location.href='leads.html'">📋 Data Konsumen</button>
-  <button onclick="location.href='add-lead.html'">➕ Tambah Konsumen</button>
-  <button onclick="logout()">🚪 Logout</button>
+<header>
+  <h2>Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<nav class="nav">
+  <a href="leads.html">📇 Leads</a>
+  <a href="followup.html">🔔 Follow Up</a>
+</nav>
+
+<div class="container">
+  <p>Selamat datang di <b>Dhito Pro CRM</b></p>
 </div>
 
-<script src="js/app.js"></script>
-<script>
-protectPage();
-</script>
 </body>
 </html>
