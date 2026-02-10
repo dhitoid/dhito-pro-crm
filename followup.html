@@ -36,16 +36,27 @@ const id = Number(new URLSearchParams(location.search).get("id"));
 function load(){
   getLeads(data=>{
     const d = data.find(x=>x.id===id);
+
     status.value = d.status;
     next.value = d.nextFollow || "";
     history.innerHTML = "";
-    d.catatan.forEach(c=>{
-      history.innerHTML += `<li>${c.tgl} - ${c.text}</li>`;
+
+    if(d.nextFollow){
+      history.innerHTML += `<li><b>Next FU:</b> ${d.nextFollow}</li>`;
+    }
+
+    d.catatan.slice().reverse().forEach(c=>{
+      history.innerHTML += `<li>${c.tgl}<br>${c.text}</li>`;
     });
   });
 }
 
 function simpan(){
+  if(!note.value && !next.value){
+    alert("Isi catatan atau tanggal follow up");
+    return;
+  }
+
   const tx = db.transaction("leads","readwrite");
   const store = tx.objectStore("leads");
   const req = store.get(id);
@@ -54,12 +65,14 @@ function simpan(){
     const d = req.result;
     d.status = status.value;
     d.nextFollow = next.value;
+
     if(note.value){
       d.catatan.push({
         tgl: new Date().toLocaleString(),
         text: note.value
       });
     }
+
     store.put(d);
     note.value="";
     load();
