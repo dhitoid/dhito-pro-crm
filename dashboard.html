@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Dashboard - Dhito Pro CRM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ui.css">
 </head>
 <body class="dark">
 
@@ -18,43 +18,25 @@
 
 <div class="container">
 
-  <!-- STAT -->
-  <div class="grid">
+  <div class="grid grid-3">
     <div class="card stat">
       <h3 id="total">0</h3>
-      <p>Total Leads</p>
+      <p class="sub">Total Leads</p>
     </div>
-    <div class="card stat yellow">
+    <div class="card stat">
       <h3 id="today">0</h3>
-      <p>Follow Up Hari Ini</p>
+      <p class="sub">Follow Up Hari Ini</p>
     </div>
-    <div class="card stat green">
+    <div class="card stat">
       <h3 id="closing">0</h3>
-      <p>Closing</p>
+      <p class="sub">Closing</p>
     </div>
   </div>
 
-  <!-- PIPELINE -->
-  <div class="card">
-    <h3>Pipeline</h3>
-    <div class="pipeline">
-      <span>New: <b id="pNew">0</b></span>
-      <span>FU: <b id="pFu">0</b></span>
-      <span>Survey: <b id="pSurvey">0</b></span>
-      <span>Closing: <b id="pClose">0</b></span>
-    </div>
-  </div>
-
-  <!-- REMINDER -->
   <div class="card">
     <h3>🔔 Follow Up Hari Ini</h3>
     <ul id="reminder"></ul>
   </div>
-
-  <nav class="quick">
-    <a href="leads.html">📇 Leads</a>
-    <a href="followup.html">🔔 Follow Up</a>
-  </nav>
 
 </div>
 
