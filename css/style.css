@@ -38,3 +38,18 @@ button {
   margin:10px 0;
   color:#58a6ff;
 }
+
+.badge{
+  display:inline-block;
+  background:#ef4444;
+  color:#fff;
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:999px;
+  margin-top:6px;
+}
+
+.reminder{
+  border-left:4px solid #ef4444;
+  padding-left:10px;
+}
