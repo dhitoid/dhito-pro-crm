@@ -1,264 +1,337 @@
 /* ================= ROOT ================= */
 :root{
   --bg:#030712;
-  --bg-grad:radial-gradient(1200px 600px at top,#0f172a,#030712);
-  --panel:rgba(255,255,255,.06);
-  --panel-strong:rgba(255,255,255,.1);
-  --border:rgba(255,255,255,.12);
+  --bg-grad:radial-gradient(1400px 700px at top,#0f172a,#020617);
+  --panel:rgba(255,255,255,.07);
+  --panel-strong:rgba(255,255,255,.12);
+  --border:rgba(255,255,255,.14);
 
-  --text:#e5e7eb;
+  --text:#f9fafb;
   --muted:#9ca3af;
 
-  --blue:#4f8cff;
+  --blue:#5da2ff;
   --green:#22c55e;
   --yellow:#facc15;
+  --orange:#fb923c;
   --red:#ef4444;
   --wa:#25D366;
 
-  --radius-xl:22px;
-  --radius:16px;
-  --radius-sm:12px;
+  --radius-xl:24px;
+  --radius:18px;
+  --radius-sm:14px;
+
+  --blur:blur(22px);
+  --shadow:0 25px 60px rgba(0,0,0,.45);
 }
 
 /* ================= RESET ================= */
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 
+/* ================= BODY ================= */
 body{
   background:var(--bg-grad);
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont;
   -webkit-font-smoothing:antialiased;
 }
 
 /* ================= TYPO ================= */
 h1,h2,h3{
   margin:0 0 14px;
-  font-weight:600;
-  letter-spacing:-.3px;
+  font-weight:700;
+  letter-spacing:-.35px;
 }
 
-h2{font-size:22px}
-h3{font-size:16px}
+h2{font-size:24px}
+h3{font-size:17px}
 .sub{font-size:13px;color:var(--muted)}
 
 a{
   color:var(--blue);
   text-decoration:none;
-  font-weight:500;
+  font-weight:600;
 }
 
-/* ================= LAYOUT ================= */
+/* ================= APP LAYOUT ================= */
 .app{
   display:flex;
   min-height:100vh;
 }
 
+/* ================= CONTENT ================= */
 .content{
   flex:1;
   overflow-y:auto;
 }
 
+/* ================= CONTAINER ================= */
 .container{
-  max-width:900px;
+  max-width:980px;
   margin:auto;
-  padding:24px;
+  padding:26px;
 }
 
 /* ================= CARD ================= */
 .card{
   background:
-    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));
   border:1px solid var(--border);
   border-radius:var(--radius-xl);
-  padding:20px;
-  margin-bottom:20px;
-  backdrop-filter:blur(18px);
+  padding:22px;
+  margin-bottom:22px;
+  backdrop-filter:var(--blur);
   box-shadow:
-    0 10px 30px rgba(0,0,0,.25),
-    inset 0 1px rgba(255,255,255,.06);
+    var(--shadow),
+    inset 0 1px rgba(255,255,255,.08);
+  transition:.3s ease;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 35px 80px rgba(0,0,0,.55);
 }
 
 /* ================= FORM ================= */
 input,select,textarea{
   width:100%;
   margin-bottom:14px;
-  padding:14px 16px;
+  padding:16px 18px;
   border-radius:var(--radius);
   border:1px solid var(--border);
-  background:rgba(3,7,18,.85);
+  background:rgba(3,7,18,.92);
   color:white;
-  font-size:14px;
+  font-size:15px;
   outline:none;
+  transition:.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#6b7280;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
   border-color:var(--blue);
-  box-shadow:0 0 0 4px rgba(79,140,255,.18);
+  box-shadow:0 0 0 5px rgba(93,162,255,.25);
 }
-
-textarea{min-height:100px}
 
 /* ================= BUTTON ================= */
 button{
   width:100%;
-  padding:14px;
+  padding:15px;
   border-radius:var(--radius);
   border:none;
-  background:linear-gradient(135deg,#4f8cff,#2563eb);
+  background:linear-gradient(135deg,#5da2ff,#2563eb);
   color:white;
-  font-weight:600;
+  font-weight:700;
+  letter-spacing:.3px;
   cursor:pointer;
+  transition:.2s ease;
 }
 
-button:hover{filter:brightness(1.08)}
+button:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.1);
+}
 
 button.ghost{
-  background:transparent;
+  background:rgba(255,255,255,.05);
   border:1px solid var(--border);
 }
 
 /* ================= GRID ================= */
-.grid{display:grid;gap:18px}
-.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid{
+  display:grid;
+  gap:20px;
+}
+.grid-3{
+  grid-template-columns:repeat(3,1fr);
+}
 
+/* ================= STAT ================= */
 .stat{
   text-align:center;
 }
 
 .stat h3{
-  font-size:36px;
+  font-size:42px;
   margin:0;
-  font-weight:700;
+  font-weight:800;
+  letter-spacing:-.5px;
 }
 
 /* ================= LIST ================= */
-ul{list-style:none;padding:0;margin:0}
+ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
 
+/* ================= LEAD ITEM ================= */
 .lead-item{
-  padding:16px;
+  padding:18px;
   border-radius:var(--radius);
-  background:rgba(255,255,255,.04);
+  background:rgba(255,255,255,.05);
   border:1px solid var(--border);
-  margin-bottom:12px;
+  margin-bottom:14px;
   transition:.25s ease;
 }
 
 .lead-item:hover{
-  transform:translateY(-2px);
-  background:rgba(255,255,255,.07);
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.09);
 }
 
-/* ================= BADGE (AUTO STATUS) ================= */
+/* ================= BADGE ================= */
 .badge{
   display:inline-flex;
   align-items:center;
-  gap:6px;
-  padding:5px 12px;
+  gap:7px;
+  padding:6px 14px;
   border-radius:999px;
-  font-size:11px;
-  font-weight:600;
+  font-size:12px;
+  font-weight:700;
 }
 
 .badge::before{
   content:"";
-  width:6px;
-  height:6px;
+  width:7px;
+  height:7px;
   border-radius:50%;
 }
 
-.badge.New{
-  background:rgba(79,140,255,.18);
-  color:#93c5fd;
+/* STATUS MATCH PIPELINE */
+.badge.blue{
+  background:rgba(93,162,255,.18);
+  color:#bfdbfe;
 }
-.badge.New::before{background:#60a5fa}
+.badge.blue::before{background:#60a5fa}
 
-.badge["Follow Up"]{
+.badge.indigo{
+  background:rgba(99,102,241,.18);
+  color:#c7d2fe;
+}
+.badge.indigo::before{background:#818cf8}
+
+.badge.green{
+  background:rgba(34,197,94,.18);
+  color:#bbf7d0;
+}
+.badge.green::before{background:#22c55e}
+
+.badge.yellow{
   background:rgba(250,204,21,.18);
   color:#fde68a;
 }
-.badge["Follow Up"]::before{background:#facc15}
+.badge.yellow::before{background:#facc15}
 
-.badge.Survey{
-  background:rgba(34,197,94,.18);
-  color:#86efac;
+.badge.orange{
+  background:rgba(251,146,60,.2);
+  color:#fed7aa;
 }
-.badge.Survey::before{background:#22c55e}
+.badge.orange::before{background:#fb923c}
 
-.badge.Closing{
-  background:rgba(16,185,129,.25);
-  color:#6ee7b7;
+.badge.red{
+  background:rgba(239,68,68,.2);
+  color:#fecaca;
 }
-.badge.Closing::before{background:#10b981}
+.badge.red::before{background:#ef4444}
 
-/* ================= QUICK ACTION ================= */
+/* ================= ACTIONS ================= */
 .actions{
   display:flex;
-  gap:10px;
-  margin-top:10px;
+  gap:12px;
+  margin-top:12px;
 }
 
 .action-btn{
   flex:1;
-  padding:10px;
+  padding:12px;
   border-radius:14px;
   font-size:13px;
-  font-weight:600;
+  font-weight:700;
   text-align:center;
   border:1px solid var(--border);
+  transition:.2s ease;
+}
+
+.action-btn:hover{
+  background:rgba(255,255,255,.08);
 }
 
 .action-wa{
-  background:rgba(37,211,102,.15);
+  background:rgba(37,211,102,.16);
   color:#25D366;
-  border-color:rgba(37,211,102,.4);
+  border-color:rgba(37,211,102,.45);
 }
 
 /* ================= SIDEBAR ================= */
 .sidebar{
-  width:88px;
-  background:rgba(3,7,18,.95);
+  width:96px;
+  background:rgba(3,7,18,.98);
   border-right:1px solid var(--border);
-  padding:18px 10px;
+  padding:18px 12px;
   display:flex;
   flex-direction:column;
   align-items:center;
+  backdrop-filter:var(--blur);
 }
 
 .sidebar .logo{
   font-size:11px;
-  font-weight:700;
-  margin-bottom:32px;
+  font-weight:800;
+  margin-bottom:36px;
+  letter-spacing:.4px;
 }
 
 .sidebar a{
   width:100%;
   padding:14px 0;
-  margin-bottom:8px;
+  margin-bottom:10px;
   text-align:center;
-  border-radius:16px;
+  border-radius:18px;
   font-size:11px;
   color:var(--muted);
-  transition:.25s;
+  transition:.25s ease;
 }
 
 .sidebar a span{
   display:block;
-  font-size:20px;
+  font-size:22px;
   margin-bottom:6px;
 }
 
 .sidebar a.active,
 .sidebar a:hover{
-  background:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.14);
   color:white;
+}
+
+/* ================= TIMELINE (FOLLOW UP HISTORY) ================= */
+.timeline li{
+  position:relative;
+  padding-left:22px;
+  margin-bottom:14px;
+  border-left:2px solid rgba(255,255,255,.15);
+}
+
+.timeline li::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--blue);
+  position:absolute;
+  left:-6px;
+  top:6px;
 }
 
 /* ================= MOBILE ================= */
 @media(max-width:720px){
   .grid-3{grid-template-columns:1fr}
-  .sidebar{width:72px}
+  .sidebar{width:76px}
   .container{padding:16px}
 }
