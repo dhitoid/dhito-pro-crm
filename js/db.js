@@ -1,25 +1,65 @@
-let db;
-const req = indexedDB.open("DhitoCRM", 1);
+let db = null;
 
-req.onupgradeneeded = e => {
-  db = e.target.result;
-  db.createObjectStore("leads", {
-    keyPath: "id",
-    autoIncrement: true
-  });
+/* ===============================
+   OPEN DATABASE
+================================ */
+const request = indexedDB.open("DhitoCRM", 1);
+
+/* ===============================
+   UPGRADE (ONLY ONCE)
+================================ */
+request.onupgradeneeded = event => {
+  const dbx = event.target.result;
+
+  if (!dbx.objectStoreNames.contains("leads")) {
+    dbx.createObjectStore("leads", {
+      keyPath: "id",
+      autoIncrement: true
+    });
+  }
 };
 
-req.onsuccess = e => {
-  db = e.target.result;
+/* ===============================
+   SUCCESS
+================================ */
+request.onsuccess = event => {
+  db = event.target.result;
+  console.log("✅ DB ready");
 };
 
+/* ===============================
+   ERROR
+================================ */
+request.onerror = event => {
+  console.error("❌ DB error", event.target.error);
+};
+
+/* ===============================
+   ADD LEAD
+================================ */
 function addLead(data) {
+  if (!db) {
+    console.warn("DB not ready");
+    return;
+  }
+
   const tx = db.transaction("leads", "readwrite");
-  tx.objectStore("leads").add(data);
+  const store = tx.objectStore("leads");
+  store.add(data);
 }
 
+/* ===============================
+   GET ALL LEADS
+================================ */
 function getLeads(cb) {
+  if (!db) {
+    cb([]);
+    return;
+  }
+
   const tx = db.transaction("leads", "readonly");
-  const req = tx.objectStore("leads").getAll();
-  req.onsuccess = () => cb(req.result);
+  const store = tx.objectStore("leads");
+  const req = store.getAll();
+
+  req.onsuccess = () => cb(req.result || []);
 }
