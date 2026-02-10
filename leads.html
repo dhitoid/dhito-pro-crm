@@ -102,18 +102,20 @@ function load(){
       list.innerHTML = "<li><i>Belum ada data konsumen</i></li>";
     }
 
-    today.forEach(d=>{
-      reminder.innerHTML += `
-        <li style="border-left:4px solid ${statusColor("TODAY")}">
-          <b>${d.nama}</b><br>
-          ${d.hp}<br>
-          ${statusBadge("TODAY")}<br>
-          <a href="followup.html?id=${d.id}">Follow Up</a> |
-          <a href="#" onclick="editLead(${d.id})">Edit</a> |
-          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
-        </li>
-      `;
-    });
+today.forEach(d=>{
+  d.status = normalizeStatus(d.status);
+  reminder.innerHTML += `
+    <li style="border-left:4px solid ${statusColor(d.status)}">
+      <b>${d.nama}</b><br>
+      ${d.hp}<br>
+      ${statusBadge(d.status)}<br>
+      <small>FU: ${d.nextFollow}</small><br>
+      <a href="followup.html?id=${d.id}">Follow Up</a> |
+      <a href="#" onclick="editLead(${d.id})">Edit</a> |
+      <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+    </li>
+  `;
+});
 
     others.forEach(d=>{
       d.status = normalizeStatus(d.status);
