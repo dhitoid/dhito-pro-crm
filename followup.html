@@ -50,7 +50,7 @@
         <h3>📝 Update Follow Up</h3>
 
         <label>Status Konsumen</label>
-        <select id="status"></select>
+        <select id="statusSelect"></select>
 
         <label>Tanggal Follow Up Berikutnya</label>
         <input type="date" id="next">
@@ -74,11 +74,17 @@
 
 <script>
 const id = Number(new URLSearchParams(location.search).get("id"));
+const statusSelect = document.getElementById("statusSelect");
 
 function renderStatus(selected){
-  status.innerHTML = "";
+  statusSelect.innerHTML = "";
+
   STATUS_LIST.forEach(s=>{
-    status.innerHTML += `<option ${s===selected?"selected":""}>${s}</option>`;
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    if(s === selected) opt.selected = true;
+    statusSelect.appendChild(opt);
   });
 }
 
@@ -91,7 +97,7 @@ function loadFollowup(){
     next.value = d.nextFollow || "";
 
     history.innerHTML = "";
-    if(!d.catatan || d.catatan.length===0){
+    if(!d.catatan || d.catatan.length === 0){
       history.innerHTML = "<li><i>Belum ada catatan</i></li>";
       return;
     }
@@ -108,7 +114,7 @@ function loadFollowup(){
 }
 
 function simpan(){
-  if(!status.value){
+  if(!statusSelect.value){
     alert("Pilih status");
     return;
   }
@@ -117,7 +123,7 @@ function simpan(){
     const d = data.find(x=>x.id===id);
     if(!d) return;
 
-    d.status = status.value;
+    d.status = statusSelect.value;
     d.nextFollow = next.value;
     d.catatan = d.catatan || [];
 
