@@ -82,39 +82,6 @@
 <script src="js/pipeline.js"></script>
 
 <script>
-/* ===============================
-   STATUS FALLBACK (ANTI ERROR)
-================================ */
-const STATUS_COLOR = {
-  "New":"#3b82f6",
-  "Contacted":"#6366f1",
-  "Interested":"#22c55e",
-  "Survey":"#facc15",
-  "Booking":"#f97316",
-  "Deal":"#16a34a",
-  "Not Interested":"#ef4444"
-};
-
-function statusColor(status){
-  return STATUS_COLOR[status] || "#334155";
-}
-
-function statusBadge(status){
-  if(!status) return "";
-  return `<span class="badge" style="
-    background:${statusColor(status)};
-    color:#020617;
-    font-weight:600
-  ">${status}</span>`;
-}
-
-function isToday(date){
-  if(!date) return false;
-  const d = new Date(date).toISOString().slice(0,10);
-  const t = new Date().toISOString().slice(0,10);
-  return d === t;
-}
-
 let editId = null;
 
 function editLead(id){
