@@ -74,58 +74,28 @@
 <script src="js/pipeline.js"></script>
 
 <script>
-/* ===============================
-   CONFIG STATUS
-================================ */
-const STATUS_LIST = [
-  "New",
-  "Contacted",
-  "Interested",
-  "Survey",
-  "Booking",
-  "Deal",
-  "Not Interested"
-];
-
 const id = Number(new URLSearchParams(location.search).get("id"));
 
-/* ===============================
-   RENDER STATUS DROPDOWN
-================================ */
 function renderStatus(selected){
   status.innerHTML = "";
   STATUS_LIST.forEach(s=>{
     status.innerHTML += `
-      <option value="${s}" ${s===selected?"selected":""}>
-        ${s}
-      </option>
+      <option value="${s}" ${s===selected?"selected":""}>${s}</option>
     `;
   });
 }
 
-/* ===============================
-   LOAD DATA
-================================ */
 function load(){
   getLeads(data=>{
-    const d = data.find(x=>x.id === id);
+    const d = data.find(x=>x.id===id);
     if(!d) return;
 
     renderStatus(normalizeStatus(d.status));
     next.value = d.nextFollow || "";
     history.innerHTML = "";
 
-    if(d.nextFollow){
-      history.innerHTML += `
-        <li class="next">
-          <b>Next Follow Up</b><br>
-          <small>${d.nextFollow}</small>
-        </li>
-      `;
-    }
-
     if(d.catatan.length === 0){
-      history.innerHTML += "<li><i>Belum ada catatan follow up</i></li>";
+      history.innerHTML = "<li><i>Belum ada catatan</i></li>";
     }
 
     d.catatan.slice().reverse().forEach(c=>{
@@ -139,17 +109,9 @@ function load(){
   });
 }
 
-/* ===============================
-   SIMPAN FOLLOW UP
-================================ */
 function simpan(){
   if(!status.value){
-    alert("Pilih status konsumen");
-    return;
-  }
-
-  if(!note.value && !next.value){
-    alert("Isi catatan atau tanggal follow up");
+    alert("Pilih status");
     return;
   }
 
@@ -159,7 +121,6 @@ function simpan(){
 
   req.onsuccess = ()=>{
     const d = req.result;
-
     d.status = normalizeStatus(status.value);
     d.nextFollow = next.value;
 
@@ -176,18 +137,14 @@ function simpan(){
   };
 }
 
-/* ===============================
-   INIT
-================================ */
 document.addEventListener("DOMContentLoaded", ()=>{
-  const waitDB = setInterval(()=>{
+  const wait = setInterval(()=>{
     if(window.db){
-      clearInterval(waitDB);
+      clearInterval(wait);
       load();
     }
   },100);
 });
-
 </script>
 
 </body>
