@@ -87,11 +87,12 @@ function loadDashboard(){
     const todayList = data.filter(d => isToday(d.nextFollow));
     today.innerText = todayList.length;
 
-    closing.innerText = data.filter(d=>d.status==="Closing").length;
+    closing.innerText = data.filter(d => d.status === "Deal").length;
 
     reminder.innerHTML = "";
-    if(todayList.length===0){
+    if(todayList.length === 0){
       reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
+      return;
     }
 
     todayList.forEach(d=>{
@@ -99,6 +100,7 @@ function loadDashboard(){
         <li>
           <b>${d.nama}</b><br>
           ${d.hp}<br>
+          ${statusBadge(d.status)}<br>
           <a href="followup.html?id=${d.id}">Follow Up</a>
         </li>
       `;
@@ -106,11 +108,11 @@ function loadDashboard(){
   });
 }
 
-protect(); // auth dulu
-
+/* INIT */
 document.addEventListener("DOMContentLoaded", ()=>{
-  openDB(() => {
-    load();
+  protect();
+  openDB(()=>{
+    loadDashboard();
   });
 });
 </script>
