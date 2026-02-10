@@ -1,3 +1,38 @@
+const STATUS_LIST = [
+  "New",
+  "Contacted",
+  "Follow Up",
+  "Interested",
+  "Survey",
+  "Closing",
+  "Reject"
+];
+
+function normalizeStatus(s){
+  return STATUS_LIST.includes(s) ? s : "New";
+}
+
+function statusBadge(s){
+  const map = {
+    "New":"gray",
+    "Contacted":"blue",
+    "Follow Up":"orange",
+    "Interested":"purple",
+    "Survey":"teal",
+    "Closing":"green",
+    "Reject":"red"
+  };
+  return `<span class="badge ${map[s]||"gray"}">${s}</span>`;
+}
+
+function isToday(date){
+  if(!date) return false;
+  const d = new Date(date);
+  const t = new Date();
+  return d.toDateString() === t.toDateString();
+}
+
+
 /* ===============================
    STATUS CONFIG (SINGLE SOURCE)
 ================================ */
@@ -17,22 +52,7 @@ const STATUS_LIST = Object.keys(STATUS_MAP).filter(s=>s!=="TODAY");
 /* ===============================
    HELPERS
 ================================ */
-function normalizeStatus(status){
-  return STATUS_MAP[status] ? status : "New";
-}
 
 function statusColor(status){
   return STATUS_MAP[normalizeStatus(status)].color;
-}
-
-function statusBadge(status){
-  const s = STATUS_MAP[normalizeStatus(status)];
-  return `<span class="badge ${s.badge}">${normalizeStatus(status)}</span>`;
-}
-
-function isToday(date){
-  if(!date) return false;
-  const d = new Date(date).toISOString().slice(0,10);
-  const t = new Date().toISOString().slice(0,10);
-  return d === t;
 }
