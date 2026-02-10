@@ -16,6 +16,24 @@
   <button onclick="logout()" class="ghost">Logout</button>
 </header>
 
+<!-- OVERLAY -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="logo">Dhito Pro CRM</div>
+
+  <a href="dashboard.html" class="active">🏠 Dashboard</a>
+  <a href="leads.html">📇 Konsumen</a>
+  <a href="followup.html">🔔 Follow Up</a>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <button class="menu-btn" onclick="openSidebar()">☰</button>
+  <h2>Dashboard</h2>
+</div>
+
 <div class="container">
 
   <div class="grid grid-3">
@@ -71,6 +89,15 @@ function loadDashboard(){
       `;
     });
   });
+}
+
+function openSidebar(){
+  sidebar.classList.add("show");
+  overlay.classList.add("show");
+}
+function closeSidebar(){
+  sidebar.classList.remove("show");
+  overlay.classList.remove("show");
 }
 
 setTimeout(loadDashboard,800);
