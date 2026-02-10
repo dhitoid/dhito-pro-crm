@@ -78,9 +78,7 @@ const id = Number(new URLSearchParams(location.search).get("id"));
 function renderStatus(selected){
   status.innerHTML = "";
   STATUS_LIST.forEach(s=>{
-    status.innerHTML += `
-      <option value="${s}" ${s===selected?"selected":""}>${s}</option>
-    `;
+    status.innerHTML += `<option ${s===selected?"selected":""}>${s}</option>`;
   });
 }
 
@@ -91,9 +89,9 @@ function loadFollowup(){
 
     renderStatus(normalizeStatus(d.status));
     next.value = d.nextFollow || "";
-    history.innerHTML = "";
 
-    if(!d.catatan || d.catatan.length === 0){
+    history.innerHTML = "";
+    if(!d.catatan || d.catatan.length===0){
       history.innerHTML = "<li><i>Belum ada catatan</i></li>";
       return;
     }
@@ -119,11 +117,11 @@ function simpan(){
     const d = data.find(x=>x.id===id);
     if(!d) return;
 
-    d.status = normalizeStatus(status.value);
+    d.status = status.value;
     d.nextFollow = next.value;
+    d.catatan = d.catatan || [];
 
     if(note.value){
-      d.catatan = d.catatan || [];
       d.catatan.push({
         tgl: new Date().toLocaleString(),
         text: note.value
@@ -133,6 +131,7 @@ function simpan(){
     updateLead(d, ()=>{
       note.value = "";
       loadFollowup();
+      alert("Follow up tersimpan");
     });
   });
 }
@@ -140,9 +139,7 @@ function simpan(){
 /* INIT */
 document.addEventListener("DOMContentLoaded", ()=>{
   protect();
-  openDB(()=>{
-    loadFollowup();
-  });
+  openDB(loadFollowup);
 });
 </script>
 
