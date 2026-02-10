@@ -20,17 +20,20 @@
 <ul id="list"></ul>
 
 <script src="js/db.js"></script>
+<script src="js/pipeline.js"></script>
+
 <script>
 function simpan(){
   addLead({
-addLead({
-  nama: nama.value,
-  hp: hp.value,
-  status: "New",
-  catatan: [],
-  nextFollow: ""
-});
-  nama.value = hp.value = "";
+    nama: nama.value,
+    hp: hp.value,
+    status: "New",
+    catatan: [],
+    nextFollow: ""
+  });
+
+  nama.value = "";
+  hp.value = "";
   load();
 }
 
@@ -57,7 +60,7 @@ function load(){
     });
   });
 }
-setTimeout(load,500);
+setTimeout(load,800);
 </script>
 
 </body>
