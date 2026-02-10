@@ -133,3 +133,50 @@ a{
   margin:0;
 }
 
+/* ===== SIDEBAR ===== */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:76px;
+  height:100vh;
+  background:rgba(2,6,23,.9);
+  border-right:1px solid var(--border);
+  backdrop-filter:blur(14px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:20px;
+  z-index:100;
+}
+
+.sidebar .logo{
+  font-weight:700;
+  font-size:12px;
+  margin-bottom:30px;
+  text-align:center;
+}
+
+.sidebar a{
+  width:100%;
+  text-align:center;
+  padding:14px 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.sidebar a span{
+  display:block;
+  font-size:18px;
+}
+
+.sidebar a.active,
+.sidebar a:hover{
+  color:white;
+  background:rgba(255,255,255,.06);
+}
+
+/* CONTENT SHIFT */
+.with-sidebar{
+  margin-left:76px;
+}
