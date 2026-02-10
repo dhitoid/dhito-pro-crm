@@ -138,12 +138,9 @@ function simpan(){
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
-  const wait = setInterval(()=>{
-    if(window.db){
-      clearInterval(wait);
-      load();
-    }
-  },100);
+  onDBReady(() => {
+    load();
+  });
 });
 </script>
 
