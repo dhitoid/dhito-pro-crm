@@ -53,3 +53,13 @@ button {
   border-left:4px solid #ef4444;
   padding-left:10px;
 }
+
+#editBox{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:360px;
+  z-index:99;
+}
