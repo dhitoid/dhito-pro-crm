@@ -84,68 +84,9 @@
 <script>
 let editId = null;
 
-function editLead(id){
-  editId = id;
-  getLeads(data=>{
-    const d = data.find(x=>x.id===id);
-    editNama.value = d.nama;
-    editHp.value = d.hp;
-    editBox.style.display = "block";
-    editBox.scrollIntoView({behavior:"smooth"});
-  });
-}
-
-function batalEdit(){
-  editBox.style.display = "none";
-  editId = null;
-}
-
-function simpanEdit(){
-  if(!editNama.value || !editHp.value){
-    alert("Lengkapi data");
-    return;
-  }
-
-  const tx = db.transaction("leads","readwrite");
-  const store = tx.objectStore("leads");
-  const req = store.get(editId);
-
-  req.onsuccess = ()=>{
-    const d = req.result;
-    d.nama = editNama.value;
-    d.hp = editHp.value;
-    store.put(d);
-    batalEdit();
-    load();
-  };
-}
-
-function hapusLead(id){
-  if(!confirm("Hapus data ini?")) return;
-  const tx = db.transaction("leads","readwrite");
-  tx.objectStore("leads").delete(id);
-  load();
-}
-
-function simpan(){
-  if(!nama.value || !hp.value){
-    alert("Lengkapi data");
-    return;
-  }
-
-  addLead({
-    nama: nama.value,
-    hp: hp.value,
-    status: "New",
-    catatan: [],
-    nextFollow: ""
-  });
-
-  nama.value = "";
-  hp.value = "";
-  load();
-}
-
+/* ===============================
+   LOAD DATA
+================================ */
 function load(){
   getLeads(data=>{
     reminder.innerHTML = "";
@@ -162,46 +103,103 @@ function load(){
       list.innerHTML = "<li><i>Belum ada data konsumen</i></li>";
     }
 
-today.forEach(d=>{
-  reminder.innerHTML += `
-    <li class="reminder" style="border-left:4px solid ${statusColor('TODAY')}">
-      <b>${d.nama}</b><br>
-      ${d.hp}<br>
-      ${statusBadge("TODAY")}<br>
-      <a href="followup.html?id=${d.id}">Follow Up</a> |
-      <a href="#" onclick="editLead(${d.id})">Edit</a> |
-      <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
-    </li>
-  `;
-});
+    today.forEach(d=>{
+      reminder.innerHTML += `
+        <li style="border-left:4px solid ${statusColor("TODAY")}">
+          <b>${d.nama}</b><br>
+          ${d.hp}<br>
+          ${statusBadge("TODAY")}<br>
+          <a href="followup.html?id=${d.id}">Follow Up</a> |
+          <a href="#" onclick="editLead(${d.id})">Edit</a> |
+          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+        </li>
+      `;
+    });
 
-others.forEach(d=>{
-  d.status = normalizeStatus(d.status);
-
-  list.innerHTML += `
-    <li style="border-left:4px solid ${statusColor(d.status)}">
-      <b>${d.nama}</b><br>
-      ${d.hp}<br>
-      ${statusBadge(d.status)}<br>
-      ${d.nextFollow ? `<small>FU: ${d.nextFollow}</small>` : ""}
-      <br>
-      <a href="followup.html?id=${d.id}">Follow Up</a> |
-      <a href="#" onclick="editLead(${d.id})">Edit</a> |
-      <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
-    </li>
-  `;
-});
+    others.forEach(d=>{
+      d.status = normalizeStatus(d.status);
+      list.innerHTML += `
+        <li style="border-left:4px solid ${statusColor(d.status)}">
+          <b>${d.nama}</b><br>
+          ${d.hp}<br>
+          ${statusBadge(d.status)}<br>
+          ${d.nextFollow ? `<small>FU: ${d.nextFollow}</small>` : ""}
+          <br>
+          <a href="followup.html?id=${d.id}">Follow Up</a> |
+          <a href="#" onclick="editLead(${d.id})">Edit</a> |
+          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+        </li>
+      `;
+    });
+  });
 }
 
+/* ===============================
+   CRUD
+================================ */
+function simpan(){
+  if(!nama.value || !hp.value){
+    alert("Lengkapi data");
+    return;
+  }
+
+  addLead({
+    nama: nama.value,
+    hp: hp.value,
+    status: "New",
+    catatan: [],
+    nextFollow: ""
+  });
+
+  nama.value = "";
+  hp.value = "";
+  setTimeout(load,100);
+}
+
+function editLead(id){
+  editId = id;
+  getLeads(data=>{
+    const d = data.find(x=>x.id===id);
+    editNama.value = d.nama;
+    editHp.value = d.hp;
+    editBox.style.display = "block";
+  });
+}
+
+function simpanEdit(){
+  const tx = db.transaction("leads","readwrite");
+  const store = tx.objectStore("leads");
+  const req = store.get(editId);
+
+  req.onsuccess = ()=>{
+    const d = req.result;
+    d.nama = editNama.value;
+    d.hp = editHp.value;
+    store.put(d);
+    editBox.style.display = "none";
+    load();
+  };
+}
+
+function hapusLead(id){
+  if(!confirm("Hapus data?")) return;
+  db.transaction("leads","readwrite")
+    .objectStore("leads")
+    .delete(id);
+  load();
+}
+
+/* ===============================
+   INIT
+================================ */
 document.addEventListener("DOMContentLoaded", ()=>{
-  const waitDB = setInterval(()=>{
+  const wait = setInterval(()=>{
     if(window.db){
-      clearInterval(waitDB);
+      clearInterval(wait);
       load();
     }
   },100);
 });
-
 </script>
 
 </body>
