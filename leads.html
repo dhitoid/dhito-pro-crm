@@ -23,11 +23,13 @@
 <script>
 function simpan(){
   addLead({
-    nama: nama.value,
-    hp: hp.value,
-    status: "New",
-    catatan: ""
-  });
+addLead({
+  nama: nama.value,
+  hp: hp.value,
+  status: "New",
+  catatan: [],
+  nextFollow: ""
+});
   nama.value = hp.value = "";
   load();
 }
