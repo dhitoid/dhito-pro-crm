@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Follow Up - Dhito Pro CRM</title>
+<title>Follow Up – Dhito Pro CRM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/ui.css">
 </head>
@@ -11,44 +11,99 @@
 <script src="js/auth.js"></script>
 <script>protect()</script>
 
-<div class="container">
+<div class="app">
 
-  <div class="card">
-    <h3>Follow Up Konsumen</h3>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">DHITO<br>CRM</div>
 
-    <select id="status"></select>
-    <input type="date" id="next">
-    <textarea id="note" placeholder="Catatan follow up..."></textarea>
+    <a href="dashboard.html">
+      <span>🏠</span> Home
+    </a>
 
-    <button onclick="simpan()">Simpan Follow Up</button>
-  </div>
+    <a href="leads.html">
+      <span>📇</span> Leads
+    </a>
 
-  <div class="card">
-    <h3>Riwayat Follow Up</h3>
-    <ul id="history"></ul>
-  </div>
+    <a href="followup.html" class="active">
+      <span>🔔</span> Follow
+    </a>
+
+    <div style="margin-top:auto;width:100%">
+      <a href="#" onclick="logout()">
+        <span>🚪</span> Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="container">
+
+      <h2>Follow Up Konsumen</h2>
+
+      <!-- FORM -->
+      <div class="card">
+        <h3>📝 Update Follow Up</h3>
+
+        <label>Status</label>
+        <select id="status"></select>
+
+        <label>Tanggal Follow Up Berikutnya</label>
+        <input type="date" id="next">
+
+        <label>Catatan</label>
+        <textarea id="note" placeholder="Tulis hasil follow up, respon konsumen, dll..."></textarea>
+
+        <button onclick="simpan()">Simpan Follow Up</button>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="card">
+        <h3>📜 Riwayat Follow Up</h3>
+        <ul id="history" class="timeline"></ul>
+      </div>
+
+    </div>
+  </main>
 
 </div>
 
 <script src="js/db.js"></script>
 <script src="js/pipeline.js"></script>
+
 <script>
 const id = Number(new URLSearchParams(location.search).get("id"));
 
 function load(){
   getLeads(data=>{
     const d = data.find(x=>x.id===id);
+    if(!d) return;
 
     status.value = d.status;
     next.value = d.nextFollow || "";
     history.innerHTML = "";
 
     if(d.nextFollow){
-      history.innerHTML += `<li><b>Next FU:</b> ${d.nextFollow}</li>`;
+      history.innerHTML += `
+        <li class="next">
+          <b>Next Follow Up</b><br>
+          <small>${d.nextFollow}</small>
+        </li>
+      `;
+    }
+
+    if(d.catatan.length === 0){
+      history.innerHTML += "<li><i>Belum ada catatan follow up</i></li>";
     }
 
     d.catatan.slice().reverse().forEach(c=>{
-      history.innerHTML += `<li>${c.tgl}<br>${c.text}</li>`;
+      history.innerHTML += `
+        <li>
+          <small>${c.tgl}</small><br>
+          ${c.text}
+        </li>
+      `;
     });
   });
 }
@@ -76,7 +131,7 @@ function simpan(){
     }
 
     store.put(d);
-    note.value="";
+    note.value = "";
     load();
   }
 }
