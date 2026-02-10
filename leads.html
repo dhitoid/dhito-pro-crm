@@ -175,20 +175,20 @@ function load(){
       `;
     });
 
-    others.forEach(d=>{
-      list.innerHTML += `
-        <li style="border-left:4px solid ${statusColor(d.status)}">
-          <b>${d.nama}</b><br>
-          ${d.hp}<br>
-          <small>Status: ${d.status}</small><br>
-          ${d.nextFollow ? "FU: "+d.nextFollow : ""}
-          <br>
-          <a href="followup.html?id=${d.id}">Follow Up</a> |
-          <a href="#" onclick="editLead(${d.id})">Edit</a> |
-          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
-        </li>
-      `;
-    });
+others.forEach(d=>{
+  list.innerHTML += `
+    <li style="border-left:4px solid ${statusColor(d.status)}">
+      <b>${d.nama}</b><br>
+      ${d.hp}<br>
+      ${statusBadge(d.status)}<br>
+      ${d.nextFollow ? "<small>FU: "+d.nextFollow+"</small>" : ""}
+      <br>
+      <a href="followup.html?id=${d.id}">Follow Up</a> |
+      <a href="#" onclick="editLead(${d.id})">Edit</a> |
+      <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+    </li>
+  `;
+});
   });
 }
 
