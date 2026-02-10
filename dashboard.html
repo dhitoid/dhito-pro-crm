@@ -11,50 +11,69 @@
 <script src="js/auth.js"></script>
 <script>protect()</script>
 
-<header class="top">
-  <h2>Dhito Pro CRM</h2>
-  <button onclick="logout()" class="ghost">Logout</button>
-</header>
+<div class="app">
 
-<!-- OVERLAY -->
-<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
-
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-  <div class="logo">Dhito Pro CRM</div>
-
-  <a href="dashboard.html" class="active">🏠 Dashboard</a>
-  <a href="leads.html">📇 Konsumen</a>
-  <a href="followup.html">🔔 Follow Up</a>
-</div>
-
-<!-- TOP BAR -->
-<div class="topbar">
-  <button class="menu-btn" onclick="openSidebar()">☰</button>
-  <h2>Dashboard</h2>
-</div>
-
-<div class="container">
-
-  <div class="grid grid-3">
-    <div class="card stat">
-      <h3 id="total">0</h3>
-      <p class="sub">Total Leads</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      DHITO<br>CRM
     </div>
-    <div class="card stat">
-      <h3 id="today">0</h3>
-      <p class="sub">Follow Up Hari Ini</p>
-    </div>
-    <div class="card stat">
-      <h3 id="closing">0</h3>
-      <p class="sub">Closing</p>
-    </div>
-  </div>
 
-  <div class="card">
-    <h3>🔔 Follow Up Hari Ini</h3>
-    <ul id="reminder"></ul>
-  </div>
+    <a href="dashboard.html" class="active">
+      <span>🏠</span>
+      Home
+    </a>
+
+    <a href="leads.html">
+      <span>📇</span>
+      Leads
+    </a>
+
+    <a href="followup.html">
+      <span>🔔</span>
+      Follow
+    </a>
+
+    <div style="margin-top:auto;width:100%">
+      <a href="#" onclick="logout()">
+        <span>🚪</span>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="container">
+
+      <h2>Dashboard</h2>
+
+      <!-- STAT -->
+      <div class="grid grid-3">
+        <div class="card stat">
+          <h3 id="total">0</h3>
+          <p class="sub">Total Leads</p>
+        </div>
+
+        <div class="card stat">
+          <h3 id="today">0</h3>
+          <p class="sub">Follow Up Hari Ini</p>
+        </div>
+
+        <div class="card stat">
+          <h3 id="closing">0</h3>
+          <p class="sub">Closing</p>
+        </div>
+      </div>
+
+      <!-- REMINDER -->
+      <div class="card">
+        <h3>🔔 Follow Up Hari Ini</h3>
+        <ul id="reminder"></ul>
+      </div>
+
+    </div>
+  </main>
 
 </div>
 
@@ -70,15 +89,11 @@ function loadDashboard(){
 
     closing.innerText = data.filter(d=>d.status==="Closing").length;
 
-    pNew.innerText = data.filter(d=>d.status==="New").length;
-    pFu.innerText = data.filter(d=>d.status==="Follow Up").length;
-    pSurvey.innerText = data.filter(d=>d.status==="Survey").length;
-    pClose.innerText = data.filter(d=>d.status==="Closing").length;
-
     reminder.innerHTML = "";
     if(todayList.length===0){
       reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
     }
+
     todayList.forEach(d=>{
       reminder.innerHTML += `
         <li>
@@ -89,15 +104,6 @@ function loadDashboard(){
       `;
     });
   });
-}
-
-function openSidebar(){
-  sidebar.classList.add("show");
-  overlay.classList.add("show");
-}
-function closeSidebar(){
-  sidebar.classList.remove("show");
-  overlay.classList.remove("show");
 }
 
 setTimeout(loadDashboard,800);
