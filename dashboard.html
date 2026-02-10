@@ -11,19 +11,88 @@
 <script src="js/auth.js"></script>
 <script>protect()</script>
 
-<header>
-  <h2>Dashboard</h2>
-  <button onclick="logout()">Logout</button>
+<header class="top">
+  <h2>Dhito Pro CRM</h2>
+  <button onclick="logout()" class="ghost">Logout</button>
 </header>
 
-<nav class="nav">
-  <a href="leads.html">📇 Leads</a>
-  <a href="followup.html">🔔 Follow Up</a>
-</nav>
-
 <div class="container">
-  <p>Selamat datang di <b>Dhito Pro CRM</b></p>
+
+  <!-- STAT -->
+  <div class="grid">
+    <div class="card stat">
+      <h3 id="total">0</h3>
+      <p>Total Leads</p>
+    </div>
+    <div class="card stat yellow">
+      <h3 id="today">0</h3>
+      <p>Follow Up Hari Ini</p>
+    </div>
+    <div class="card stat green">
+      <h3 id="closing">0</h3>
+      <p>Closing</p>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="card">
+    <h3>Pipeline</h3>
+    <div class="pipeline">
+      <span>New: <b id="pNew">0</b></span>
+      <span>FU: <b id="pFu">0</b></span>
+      <span>Survey: <b id="pSurvey">0</b></span>
+      <span>Closing: <b id="pClose">0</b></span>
+    </div>
+  </div>
+
+  <!-- REMINDER -->
+  <div class="card">
+    <h3>🔔 Follow Up Hari Ini</h3>
+    <ul id="reminder"></ul>
+  </div>
+
+  <nav class="quick">
+    <a href="leads.html">📇 Leads</a>
+    <a href="followup.html">🔔 Follow Up</a>
+  </nav>
+
 </div>
+
+<script src="js/db.js"></script>
+<script src="js/pipeline.js"></script>
+<script>
+function loadDashboard(){
+  getLeads(data=>{
+    total.innerText = data.length;
+
+    const todayList = data.filter(d => isToday(d.nextFollow));
+    today.innerText = todayList.length;
+
+    closing.innerText = data.filter(d=>d.status==="Closing").length;
+
+    pNew.innerText = data.filter(d=>d.status==="New").length;
+    pFu.innerText = data.filter(d=>d.status==="Follow Up").length;
+    pSurvey.innerText = data.filter(d=>d.status==="Survey").length;
+    pClose.innerText = data.filter(d=>d.status==="Closing").length;
+
+    reminder.innerHTML = "";
+    if(todayList.length===0){
+      reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
+    }
+    todayList.forEach(d=>{
+      reminder.innerHTML += `
+        <li>
+          <b>${d.nama}</b><br>
+          ${d.hp}<br>
+          <a href="followup.html?id=${d.id}">Follow Up</a>
+        </li>
+      `;
+    });
+  });
+}
+
+setTimeout(loadDashboard,800);
+</script>
 
 </body>
 </html>
