@@ -1,0 +1,134 @@
+:root{
+  --bg:#020617;
+  --panel:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.08);
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+
+  --blue:#3b82f6;
+  --yellow:#facc15;
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top,#0f172a,#020617);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system;
+}
+
+.center{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.container{
+  max-width:820px;
+  margin:auto;
+  padding:18px;
+}
+
+h1,h2,h3{margin:0 0 12px}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:18px;
+  backdrop-filter: blur(14px);
+}
+
+.sub{color:var(--muted)}
+
+input,select,textarea{
+  width:100%;
+  margin-bottom:12px;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:white;
+}
+
+textarea{min-height:90px}
+
+button{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:white;
+  font-weight:600;
+}
+
+button.ghost{
+  background:transparent;
+  border:1px solid var(--border);
+}
+
+ul{list-style:none;padding:0;margin:0}
+
+li{
+  padding:14px;
+  border-bottom:1px solid var(--border);
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.badge.today{background:#7c2d12}
+.badge.New{background:#1e3a8a}
+.badge["Follow Up"]{background:#92400e}
+.badge.Survey{background:#064e3b}
+.badge.Closing{background:#14532d}
+
+.action{
+  display:flex;
+  gap:14px;
+  margin-top:10px;
+}
+
+a{
+  color:var(--blue);
+  text-decoration:none;
+  font-weight:500;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.grid{
+  display:grid;
+  gap:14px;
+}
+
+.grid-3{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat h3{
+  font-size:30px;
+  margin:0;
+}
