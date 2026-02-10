@@ -95,16 +95,17 @@ function loadDashboard(){
       return;
     }
 
-    todayList.forEach(d=>{
-      reminder.innerHTML += `
-        <li>
-          <b>${d.nama}</b><br>
-          ${d.hp}<br>
-          ${statusBadge(d.status)}<br>
-          <a href="followup.html?id=${d.id}">Follow Up</a>
-        </li>
-      `;
-    });
+todayList.forEach(d=>{
+  d.status = normalizeStatus(d.status);
+  reminder.innerHTML += `
+    <li style="border-left:4px solid ${statusColor(d.status)}">
+      <b>${d.nama}</b><br>
+      ${d.hp}<br>
+      ${statusBadge(d.status)}<br>
+      <a href="followup.html?id=${d.id}">Follow Up</a>
+    </li>
+  `;
+});
   });
 }
 
