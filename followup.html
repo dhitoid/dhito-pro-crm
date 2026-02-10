@@ -84,7 +84,7 @@ function renderStatus(selected){
   });
 }
 
-function load(){
+function loadFollowup(){
   getLeads(data=>{
     const d = data.find(x=>x.id===id);
     if(!d) return;
@@ -93,8 +93,9 @@ function load(){
     next.value = d.nextFollow || "";
     history.innerHTML = "";
 
-    if(d.catatan.length === 0){
+    if(!d.catatan || d.catatan.length === 0){
       history.innerHTML = "<li><i>Belum ada catatan</i></li>";
+      return;
     }
 
     d.catatan.slice().reverse().forEach(c=>{
@@ -114,33 +115,33 @@ function simpan(){
     return;
   }
 
-  const tx = db.transaction("leads","readwrite");
-  const store = tx.objectStore("leads");
-  const req = store.get(id);
+  getLeads(data=>{
+    const d = data.find(x=>x.id===id);
+    if(!d) return;
 
-  req.onsuccess = ()=>{
-    const d = req.result;
     d.status = normalizeStatus(status.value);
     d.nextFollow = next.value;
 
     if(note.value){
+      d.catatan = d.catatan || [];
       d.catatan.push({
         tgl: new Date().toLocaleString(),
         text: note.value
       });
     }
 
-    store.put(d);
-    note.value = "";
-    load();
-  };
+    updateLead(d, ()=>{
+      note.value = "";
+      loadFollowup();
+    });
+  });
 }
 
-protect(); // auth dulu
-
+/* INIT */
 document.addEventListener("DOMContentLoaded", ()=>{
-  openDB(() => {
-    load();
+  protect();
+  openDB(()=>{
+    loadFollowup();
   });
 });
 </script>
