@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/ui.css">
 </head>
+
 <body class="dark">
 
 <script src="js/auth.js"></script>
@@ -46,13 +47,13 @@
       <div class="card">
         <h3>📝 Update Follow Up</h3>
 
-        <label>Status</label>
+        <label>Status Konsumen</label>
         <select id="status"></select>
 
         <label>Tanggal Follow Up Berikutnya</label>
         <input type="date" id="next">
 
-        <label>Catatan</label>
+        <label>Catatan Follow Up</label>
         <textarea id="note" placeholder="Tulis hasil follow up, respon konsumen, dll..."></textarea>
 
         <button onclick="simpan()">Simpan Follow Up</button>
@@ -73,6 +74,9 @@
 <script src="js/pipeline.js"></script>
 
 <script>
+/* ===============================
+   CONFIG STATUS
+================================ */
 const STATUS_LIST = [
   "New",
   "Contacted",
@@ -85,12 +89,29 @@ const STATUS_LIST = [
 
 const id = Number(new URLSearchParams(location.search).get("id"));
 
+/* ===============================
+   RENDER STATUS DROPDOWN
+================================ */
+function renderStatus(selected){
+  status.innerHTML = "";
+  STATUS_LIST.forEach(s=>{
+    status.innerHTML += `
+      <option value="${s}" ${s===selected?"selected":""}>
+        ${s}
+      </option>
+    `;
+  });
+}
+
+/* ===============================
+   LOAD DATA
+================================ */
 function load(){
   getLeads(data=>{
-    const d = data.find(x=>x.id===id);
+    const d = data.find(x=>x.id === id);
     if(!d) return;
 
-    status.value = d.status;
+    renderStatus(d.status);
     next.value = d.nextFollow || "";
     history.innerHTML = "";
 
@@ -118,7 +139,15 @@ function load(){
   });
 }
 
+/* ===============================
+   SIMPAN FOLLOW UP
+================================ */
 function simpan(){
+  if(!status.value){
+    alert("Pilih status konsumen");
+    return;
+  }
+
   if(!note.value && !next.value){
     alert("Isi catatan atau tanggal follow up");
     return;
@@ -130,6 +159,7 @@ function simpan(){
 
   req.onsuccess = ()=>{
     const d = req.result;
+
     d.status = status.value;
     d.nextFollow = next.value;
 
@@ -143,9 +173,12 @@ function simpan(){
     store.put(d);
     note.value = "";
     load();
-  }
+  };
 }
 
+/* ===============================
+   INIT
+================================ */
 setTimeout(load,500);
 </script>
 
