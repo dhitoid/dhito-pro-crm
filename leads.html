@@ -2,34 +2,46 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<title>Leads – Dhito Pro CRM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Konsumen</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dark">
 
-<div class="card" style="margin:20px">
-  <h2>Data Konsumen</h2>
-  <div id="list"></div>
-</div>
+<script src="js/auth.js"></script>
+<script>protect()</script>
 
-<script src="js/app.js"></script>
+<h2>Database Konsumen</h2>
+
+<input id="nama" placeholder="Nama Konsumen">
+<input id="hp" placeholder="No HP">
+<button onclick="simpan()">Simpan</button>
+
+<ul id="list"></ul>
+
+<script src="js/db.js"></script>
 <script>
-protectPage();
+function simpan(){
+  addLead({
+    nama: nama.value,
+    hp: hp.value,
+    status: "New",
+    catatan: ""
+  });
+  nama.value = hp.value = "";
+  load();
+}
 
-post({ action: "getLeads" }).then(res => {
-  if (res.status === "success") {
-    res.data.forEach(d => {
-      list.innerHTML += `
-        <div style="margin-bottom:12px;padding:12px;background:#1f2333;border-radius:12px">
-          <strong>${d[1]}</strong><br>
-          ${d[2]}<br>
-          <small>${d[4]} • ${d[5]}</small>
-        </div>
-      `;
+function load(){
+  getLeads(data=>{
+    list.innerHTML = "";
+    data.forEach(d=>{
+      list.innerHTML += `<li>${d.nama} - ${d.hp}</li>`;
     });
-  }
-});
+  });
+}
+setTimeout(load,500);
 </script>
+
 </body>
 </html>
