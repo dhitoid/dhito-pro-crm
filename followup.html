@@ -179,7 +179,15 @@ function simpan(){
 /* ===============================
    INIT
 ================================ */
-setTimeout(load,500);
+document.addEventListener("DOMContentLoaded", ()=>{
+  const waitDB = setInterval(()=>{
+    if(window.db){
+      clearInterval(waitDB);
+      load();
+    }
+  },100);
+});
+
 </script>
 
 </body>
