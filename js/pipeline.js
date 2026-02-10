@@ -12,31 +12,24 @@ const STATUS_MAP = {
   "TODAY": { color:"#0ea5e9", badge:"sky" }
 };
 
+const STATUS_LIST = Object.keys(STATUS_MAP).filter(s=>s!=="TODAY");
+
 /* ===============================
-   NORMALIZE STATUS
+   HELPERS
 ================================ */
 function normalizeStatus(status){
   return STATUS_MAP[status] ? status : "New";
 }
 
-/* ===============================
-   COLOR
-================================ */
 function statusColor(status){
   return STATUS_MAP[normalizeStatus(status)].color;
 }
 
-/* ===============================
-   BADGE
-================================ */
 function statusBadge(status){
   const s = STATUS_MAP[normalizeStatus(status)];
   return `<span class="badge ${s.badge}">${normalizeStatus(status)}</span>`;
 }
 
-/* ===============================
-   DATE CHECK
-================================ */
 function isToday(date){
   if(!date) return false;
   const d = new Date(date).toISOString().slice(0,10);
