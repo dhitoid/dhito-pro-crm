@@ -11,34 +11,70 @@
 <script src="js/auth.js"></script>
 <script>protect()</script>
 
-<h2>Database Konsumen</h2>
+<div class="app">
 
-<div class="container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">DHITO<br>CRM</div>
 
-  <div class="card">
-    <h3>Tambah Konsumen</h3>
-    <input id="nama" placeholder="Nama Konsumen">
-    <input id="hp" placeholder="No HP">
-    <button onclick="simpan()">Simpan</button>
-  </div>
+    <a href="dashboard.html">
+      <span>🏠</span> Home
+    </a>
 
-  <div id="editBox" class="card" style="display:none">
-    <h3>Edit Konsumen</h3>
-    <input id="editNama">
-    <input id="editHp">
-    <button onclick="simpanEdit()">Simpan</button>
-    <button class="ghost" onclick="batalEdit()">Batal</button>
-  </div>
+    <a href="leads.html" class="active">
+      <span>📇</span> Leads
+    </a>
 
-  <div class="card">
-    <h3>🔔 Follow Up Hari Ini</h3>
-    <ul id="reminder"></ul>
-  </div>
+    <a href="followup.html">
+      <span>🔔</span> Follow
+    </a>
 
-  <div class="card">
-    <h3>📇 Semua Konsumen</h3>
-    <ul id="list"></ul>
-  </div>
+    <div style="margin-top:auto;width:100%">
+      <a href="#" onclick="logout()">
+        <span>🚪</span> Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="container">
+
+      <h2>Database Konsumen</h2>
+
+      <!-- TAMBAH -->
+      <div class="card">
+        <h3>➕ Tambah Konsumen</h3>
+        <input id="nama" placeholder="Nama Konsumen">
+        <input id="hp" placeholder="No HP">
+        <button onclick="simpan()">Simpan</button>
+      </div>
+
+      <!-- EDIT -->
+      <div id="editBox" class="card" style="display:none">
+        <h3>✏️ Edit Konsumen</h3>
+        <input id="editNama" placeholder="Nama">
+        <input id="editHp" placeholder="No HP">
+        <div style="display:flex;gap:10px">
+          <button onclick="simpanEdit()">Simpan</button>
+          <button class="ghost" onclick="batalEdit()">Batal</button>
+        </div>
+      </div>
+
+      <!-- REMINDER -->
+      <div class="card">
+        <h3>🔔 Follow Up Hari Ini</h3>
+        <ul id="reminder"></ul>
+      </div>
+
+      <!-- LIST -->
+      <div class="card">
+        <h3>📇 Semua Konsumen</h3>
+        <ul id="list"></ul>
+      </div>
+
+    </div>
+  </main>
 
 </div>
 
@@ -55,6 +91,7 @@ function editLead(id){
     editNama.value = d.nama;
     editHp.value = d.hp;
     editBox.style.display = "block";
+    editBox.scrollIntoView({behavior:"smooth"});
   });
 }
 
@@ -91,6 +128,11 @@ function hapusLead(id){
 }
 
 function simpan(){
+  if(!nama.value || !hp.value){
+    alert("Lengkapi data");
+    return;
+  }
+
   addLead({
     nama: nama.value,
     hp: hp.value,
@@ -112,13 +154,13 @@ function load(){
     const today = data.filter(d => isToday(d.nextFollow));
     const others = data.filter(d => !isToday(d.nextFollow));
 
-if(today.length === 0){
-  reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
-}
+    if(today.length === 0){
+      reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
+    }
 
-if(others.length === 0){
-  list.innerHTML = "<li><i>Belum ada data konsumen</i></li>";
-}
+    if(others.length === 0){
+      list.innerHTML = "<li><i>Belum ada data konsumen</i></li>";
+    }
 
     today.forEach(d=>{
       reminder.innerHTML += `
@@ -127,8 +169,8 @@ if(others.length === 0){
           ${d.hp}<br>
           <span class="badge">TODAY</span><br>
           <a href="followup.html?id=${d.id}">Follow Up</a> |
-<a href="#" onclick="editLead(${d.id})">Edit</a> |
-<a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+          <a href="#" onclick="editLead(${d.id})">Edit</a> |
+          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
         </li>
       `;
     });
@@ -141,14 +183,15 @@ if(others.length === 0){
           <small>Status: ${d.status}</small><br>
           ${d.nextFollow ? "FU: "+d.nextFollow : ""}
           <br>
-         <a href="followup.html?id=${d.id}">Follow Up</a> |
-<a href="#" onclick="editLead(${d.id})">Edit</a> |
-<a href="#" onclick="hapusLead(${d.id})">Hapus</a>
+          <a href="followup.html?id=${d.id}">Follow Up</a> |
+          <a href="#" onclick="editLead(${d.id})">Edit</a> |
+          <a href="#" onclick="hapusLead(${d.id})">Hapus</a>
         </li>
       `;
     });
   });
 }
+
 setTimeout(load,800);
 </script>
 
