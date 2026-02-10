@@ -148,11 +148,11 @@ function simpan(){
     status: "New",
     catatan: [],
     nextFollow: ""
+  }, () => {
+    nama.value = "";
+    hp.value = "";
+    load(); // DIPANGGIL SETELAH TX SELESAI
   });
-
-  nama.value = "";
-  hp.value = "";
-  setTimeout(load,100);
 }
 
 function editLead(id){
@@ -191,12 +191,13 @@ function hapusLead(id){
 /* ===============================
    INIT
 ================================ */
+protect(); // auth dulu
+
 document.addEventListener("DOMContentLoaded", ()=>{
-  onDBReady(() => {
+  openDB(() => {
     load();
   });
 });
-
 </script>
 
 </body>
