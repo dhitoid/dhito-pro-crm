@@ -1,60 +1,41 @@
 let db = null;
-let dbReadyCallbacks = [];
 
-/* ===============================
-   OPEN DATABASE
-================================ */
-const request = indexedDB.open("DhitoCRM", 1);
+function openDB(callback){
+  const request = indexedDB.open("DhitoCRM", 1);
 
-/* ===============================
-   UPGRADE
-================================ */
-request.onupgradeneeded = event => {
-  const dbx = event.target.result;
+  request.onupgradeneeded = e => {
+    const d = e.target.result;
+    if(!d.objectStoreNames.contains("leads")){
+      d.createObjectStore("leads", {
+        keyPath: "id",
+        autoIncrement: true
+      });
+    }
+  };
 
-  if (!dbx.objectStoreNames.contains("leads")) {
-    dbx.createObjectStore("leads", {
-      keyPath: "id",
-      autoIncrement: true
-    });
-  }
-};
+  request.onsuccess = e => {
+    db = e.target.result;
+    console.log("✅ DB READY");
+    callback && callback();
+  };
 
-/* ===============================
-   SUCCESS
-================================ */
-request.onsuccess = event => {
-  db = event.target.result;
-  console.log("✅ IndexedDB READY");
-
-  dbReadyCallbacks.forEach(cb => cb());
-  dbReadyCallbacks = [];
-};
-
-/* ===============================
-   ERROR
-================================ */
-request.onerror = event => {
-  console.error("❌ IndexedDB error", event.target.error);
-};
-
-/* ===============================
-   DB READY HELPER
-================================ */
-function onDBReady(cb){
-  if(db){
-    cb();
-  }else{
-    dbReadyCallbacks.push(cb);
-  }
+  request.onerror = e => {
+    console.error("❌ DB ERROR", e);
+    alert("Database error");
+  };
 }
 
-/* ===============================
-   CRUD
-================================ */
-function addLead(data){
+/* CRUD */
+function addLead(data, cb){
   const tx = db.transaction("leads","readwrite");
   tx.objectStore("leads").add(data);
+  tx.oncomplete = () => cb && cb();
+}
+
+function updateLead(data, cb){
+  const tx = db.transaction("leads","readwrite");
+  tx.objectStore("leads").put(data);
+  tx.oncomplete = () => cb && cb();
 }
 
 function getLeads(cb){
