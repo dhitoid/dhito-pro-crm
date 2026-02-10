@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Leads – Dhito Pro CRM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ui.css">
 </head>
 <body class="dark">
 
@@ -13,23 +13,34 @@
 
 <h2>Database Konsumen</h2>
 
-<input id="nama" placeholder="Nama Konsumen">
-<input id="hp" placeholder="No HP">
-<button onclick="simpan()">Simpan</button>
+<div class="container">
 
-<div id="editBox" class="card" style="display:none">
-  <h3>Edit Konsumen</h3>
-  <input id="editNama" placeholder="Nama">
-  <input id="editHp" placeholder="No HP">
-  <button onclick="simpanEdit()">Simpan</button>
-  <button onclick="batalEdit()">Batal</button>
+  <div class="card">
+    <h3>Tambah Konsumen</h3>
+    <input id="nama" placeholder="Nama Konsumen">
+    <input id="hp" placeholder="No HP">
+    <button onclick="simpan()">Simpan</button>
+  </div>
+
+  <div id="editBox" class="card" style="display:none">
+    <h3>Edit Konsumen</h3>
+    <input id="editNama">
+    <input id="editHp">
+    <button onclick="simpanEdit()">Simpan</button>
+    <button class="ghost" onclick="batalEdit()">Batal</button>
+  </div>
+
+  <div class="card">
+    <h3>🔔 Follow Up Hari Ini</h3>
+    <ul id="reminder"></ul>
+  </div>
+
+  <div class="card">
+    <h3>📇 Semua Konsumen</h3>
+    <ul id="list"></ul>
+  </div>
+
 </div>
-
-<h3>🔔 Follow Up Hari Ini</h3>
-<ul id="reminder"></ul>
-
-<h3>📇 Semua Konsumen</h3>
-<ul id="list"></ul>
 
 <script src="js/db.js"></script>
 <script src="js/pipeline.js"></script>
