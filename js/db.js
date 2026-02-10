@@ -1,4 +1,5 @@
 let db = null;
+let dbReadyCallbacks = [];
 
 /* ===============================
    OPEN DATABASE
@@ -6,7 +7,7 @@ let db = null;
 const request = indexedDB.open("DhitoCRM", 1);
 
 /* ===============================
-   UPGRADE (ONLY ONCE)
+   UPGRADE
 ================================ */
 request.onupgradeneeded = event => {
   const dbx = event.target.result;
@@ -24,42 +25,40 @@ request.onupgradeneeded = event => {
 ================================ */
 request.onsuccess = event => {
   db = event.target.result;
-  console.log("✅ DB ready");
+  console.log("✅ IndexedDB READY");
+
+  dbReadyCallbacks.forEach(cb => cb());
+  dbReadyCallbacks = [];
 };
 
 /* ===============================
    ERROR
 ================================ */
 request.onerror = event => {
-  console.error("❌ DB error", event.target.error);
+  console.error("❌ IndexedDB error", event.target.error);
 };
 
 /* ===============================
-   ADD LEAD
+   DB READY HELPER
 ================================ */
-function addLead(data) {
-  if (!db) {
-    console.warn("DB not ready");
-    return;
+function onDBReady(cb){
+  if(db){
+    cb();
+  }else{
+    dbReadyCallbacks.push(cb);
   }
-
-  const tx = db.transaction("leads", "readwrite");
-  const store = tx.objectStore("leads");
-  store.add(data);
 }
 
 /* ===============================
-   GET ALL LEADS
+   CRUD
 ================================ */
-function getLeads(cb) {
-  if (!db) {
-    cb([]);
-    return;
-  }
+function addLead(data){
+  const tx = db.transaction("leads","readwrite");
+  tx.objectStore("leads").add(data);
+}
 
-  const tx = db.transaction("leads", "readonly");
-  const store = tx.objectStore("leads");
-  const req = store.getAll();
-
+function getLeads(cb){
+  const tx = db.transaction("leads","readonly");
+  const req = tx.objectStore("leads").getAll();
   req.onsuccess = () => cb(req.result || []);
 }
