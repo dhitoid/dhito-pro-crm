@@ -1,27 +1,26 @@
 let db = null;
 
-function openDB(callback){
-  const request = indexedDB.open("DhitoCRM", 1);
+function openDB(cb){
+  const req = indexedDB.open("DhitoCRM", 1);
 
-  request.onupgradeneeded = e => {
-    const d = e.target.result;
-    if(!d.objectStoreNames.contains("leads")){
-      d.createObjectStore("leads", {
+  req.onupgradeneeded = e => {
+    db = e.target.result;
+
+    if(!db.objectStoreNames.contains("leads")){
+      const store = db.createObjectStore("leads", {
         keyPath: "id",
         autoIncrement: true
       });
     }
   };
 
-  request.onsuccess = e => {
+  req.onsuccess = e => {
     db = e.target.result;
-    console.log("✅ DB READY");
-    callback && callback();
+    cb && cb();
   };
 
-  request.onerror = e => {
-    console.error("❌ DB ERROR", e);
-    alert("Database error");
+  req.onerror = () => {
+    alert("Gagal membuka database");
   };
 }
 
@@ -29,17 +28,17 @@ function openDB(callback){
 function addLead(data, cb){
   const tx = db.transaction("leads","readwrite");
   tx.objectStore("leads").add(data);
-  tx.oncomplete = () => cb && cb();
+  tx.oncomplete = ()=> cb && cb();
 }
 
 function updateLead(data, cb){
   const tx = db.transaction("leads","readwrite");
   tx.objectStore("leads").put(data);
-  tx.oncomplete = () => cb && cb();
+  tx.oncomplete = ()=> cb && cb();
 }
 
 function getLeads(cb){
   const tx = db.transaction("leads","readonly");
   const req = tx.objectStore("leads").getAll();
-  req.onsuccess = () => cb(req.result || []);
+  req.onsuccess = ()=> cb(req.result || []);
 }
