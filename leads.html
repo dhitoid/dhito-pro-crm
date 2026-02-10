@@ -225,7 +225,15 @@ others.forEach(d=>{
   });
 }
 
-setTimeout(load,800);
+document.addEventListener("DOMContentLoaded", ()=>{
+  const waitDB = setInterval(()=>{
+    if(window.db){
+      clearInterval(waitDB);
+      load();
+    }
+  },100);
+});
+
 </script>
 
 </body>
