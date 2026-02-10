@@ -49,6 +49,14 @@ function load(){
     const today = data.filter(d => isToday(d.nextFollow));
     const others = data.filter(d => !isToday(d.nextFollow));
 
+if(today.length === 0){
+  reminder.innerHTML = "<li><i>Tidak ada follow up hari ini</i></li>";
+}
+
+if(others.length === 0){
+  list.innerHTML = "<li><i>Belum ada data konsumen</i></li>";
+}
+
     today.forEach(d=>{
       reminder.innerHTML += `
         <li class="reminder">
