@@ -43,3 +43,4 @@ function getLeads(cb){
   const req = tx.objectStore("leads").getAll();
   req.onsuccess = () => cb(req.result || []);
 }
+
