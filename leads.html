@@ -17,6 +17,14 @@
 <input id="hp" placeholder="No HP">
 <button onclick="simpan()">Simpan</button>
 
+<div id="editBox" class="card" style="display:none">
+  <h3>Edit Konsumen</h3>
+  <input id="editNama" placeholder="Nama">
+  <input id="editHp" placeholder="No HP">
+  <button onclick="simpanEdit()">Simpan</button>
+  <button onclick="batalEdit()">Batal</button>
+</div>
+
 <h3>🔔 Follow Up Hari Ini</h3>
 <ul id="reminder"></ul>
 
@@ -27,6 +35,50 @@
 <script src="js/pipeline.js"></script>
 
 <script>
+let editId = null;
+
+function editLead(id){
+  editId = id;
+  getLeads(data=>{
+    const d = data.find(x=>x.id===id);
+    editNama.value = d.nama;
+    editHp.value = d.hp;
+    editBox.style.display = "block";
+  });
+}
+
+function batalEdit(){
+  editBox.style.display = "none";
+  editId = null;
+}
+
+function simpanEdit(){
+  if(!editNama.value || !editHp.value){
+    alert("Lengkapi data");
+    return;
+  }
+
+  const tx = db.transaction("leads","readwrite");
+  const store = tx.objectStore("leads");
+  const req = store.get(editId);
+
+  req.onsuccess = ()=>{
+    const d = req.result;
+    d.nama = editNama.value;
+    d.hp = editHp.value;
+    store.put(d);
+    batalEdit();
+    load();
+  };
+}
+
+function hapusLead(id){
+  if(!confirm("Hapus data ini?")) return;
+  const tx = db.transaction("leads","readwrite");
+  tx.objectStore("leads").delete(id);
+  load();
+}
+
 function simpan(){
   addLead({
     nama: nama.value,
@@ -63,7 +115,9 @@ if(others.length === 0){
           <b>${d.nama}</b><br>
           ${d.hp}<br>
           <span class="badge">TODAY</span><br>
-          <a href="followup.html?id=${d.id}">Follow Up</a>
+          <a href="followup.html?id=${d.id}">Follow Up</a> |
+<a href="#" onclick="editLead(${d.id})">Edit</a> |
+<a href="#" onclick="hapusLead(${d.id})">Hapus</a>
         </li>
       `;
     });
@@ -76,7 +130,9 @@ if(others.length === 0){
           <small>Status: ${d.status}</small><br>
           ${d.nextFollow ? "FU: "+d.nextFollow : ""}
           <br>
-          <a href="followup.html?id=${d.id}">Follow Up</a>
+         <a href="followup.html?id=${d.id}">Follow Up</a> |
+<a href="#" onclick="editLead(${d.id})">Edit</a> |
+<a href="#" onclick="hapusLead(${d.id})">Hapus</a>
         </li>
       `;
     });
