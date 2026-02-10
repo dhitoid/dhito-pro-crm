@@ -111,7 +111,7 @@ function load(){
     const d = data.find(x=>x.id === id);
     if(!d) return;
 
-    renderStatus(d.status);
+    renderStatus(normalizeStatus(d.status));
     next.value = d.nextFollow || "";
     history.innerHTML = "";
 
@@ -160,7 +160,7 @@ function simpan(){
   req.onsuccess = ()=>{
     const d = req.result;
 
-    d.status = status.value;
+    d.status = normalizeStatus(status.value);
     d.nextFollow = next.value;
 
     if(note.value){
