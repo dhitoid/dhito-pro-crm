@@ -37,8 +37,23 @@ addLead({
 function load(){
   getLeads(data=>{
     list.innerHTML = "";
+    data.sort((a,b)=>{
+      if(isToday(a.nextFollow)) return -1;
+      if(isToday(b.nextFollow)) return 1;
+      return b.id - a.id;
+    });
+
     data.forEach(d=>{
-      list.innerHTML += `<li>${d.nama} - ${d.hp}</li>`;
+      list.innerHTML += `
+        <li style="border-left:4px solid ${statusColor(d.status)}">
+          <b>${d.nama}</b><br>
+          ${d.hp}<br>
+          <small>Status: ${d.status}</small><br>
+          ${d.nextFollow ? "FU: "+d.nextFollow : ""}
+          <br>
+          <a href="followup.html?id=${d.id}">Follow Up</a>
+        </li>
+      `;
     });
   });
 }
