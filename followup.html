@@ -90,23 +90,31 @@ function renderStatus(selected){
 
 function loadFollowup(){
   getLeads(data=>{
-    const d = data.find(x=>x.id===id);
-    if(!d) return;
+    const d = data.find(x => x.id === id);
+    if(!d){
+      history.innerHTML = "<li><i>Data tidak ditemukan</i></li>";
+      return;
+    }
 
-    renderStatus(normalizeStatus(d.status));
+    // normalize
+    d.status = normalizeStatus(d.status);
+    d.catatan = Array.isArray(d.catatan) ? d.catatan : [];
+
+    renderStatus(d.status);
     next.value = d.nextFollow || "";
 
     history.innerHTML = "";
-    if(!d.catatan || d.catatan.length === 0){
-      history.innerHTML = "<li><i>Belum ada catatan</i></li>";
+
+    if(d.catatan.length === 0){
+      history.innerHTML = "<li><i>Belum ada riwayat follow up</i></li>";
       return;
     }
 
     d.catatan.slice().reverse().forEach(c=>{
       history.innerHTML += `
         <li>
-          <small>${c.tgl}</small><br>
-          ${c.text}
+          <small>${c.tgl || "-"}</small><br>
+          ${c.text || ""}
         </li>
       `;
     });
@@ -120,19 +128,18 @@ function simpan(){
   }
 
   getLeads(data=>{
-    const d = data.find(x=>x.id===id);
+    const d = data.find(x => x.id === id);
     if(!d) return;
 
     d.status = statusSelect.value;
     d.nextFollow = next.value;
-    d.catatan = d.catatan || [];
+    d.catatan = Array.isArray(d.catatan) ? d.catatan : [];
 
-    if(note.value){
-      d.catatan.push({
-        tgl: new Date().toLocaleString(),
-        text: note.value
-      });
-    }
+    // Simpan history walau note kosong
+    d.catatan.push({
+      tgl: new Date().toLocaleString(),
+      text: note.value || "(Update status tanpa catatan)"
+    });
 
     updateLead(d, ()=>{
       note.value = "";
